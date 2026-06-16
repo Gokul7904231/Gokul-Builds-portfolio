@@ -59,13 +59,13 @@ Lately, I have been training models for high-speed inference, designing multi-ag
   * Published foundational research on the system's architecture at **ICRIT '26**.
 * **Stack**: `Python` • `PyTorch` • `OpenCV` • `Flask` • `Streamlit`
 
-### 3. 🌍 Planetopia — SIH 2025 National Finalist
+### 3. 🌍 Planetopia — Gamified Education Environment
 * **Problem**: Sustainability often feels like an isolated chore rather than a shared, engaging community mission.
 * **Solution**: A gamified eco-education platform engineered during a 36-hour sprint. It features real-time dashboards, reward systems, and robust integration testing.
 * **Key Achievements**:
   * Architected real-time leaderboards and interactive eco-dashboards utilizing the MERN stack.
   * Built a custom REST API layer to handle high-velocity gamification events.
-  * Secured a **national finalist** position in the **Smart India Hackathon (SIH) 2025**.
+  * Secured a **Won College Internal Round** position in the **Smart India Hackathon (SIH) 2025**.
 * **Stack**: `React.js` • `Node.js` • `Express` • `MongoDB`
 
 ### 4. 🪵 [Carbon Ingest Platform](https://github.com/Gokul7904231/Carbon-ingest) — Enterprise ESG Tracking
