@@ -5,10 +5,10 @@ import * as THREE from 'three';
 
 const WaveParticleField: React.FC = () => {
   const pointsRef = useRef<THREE.Points>(null);
-  const cols = 50;
-  const rows = 50;
+  const cols = 60;
+  const rows = 60;
   const count = cols * rows;
-  const spacing = 0.28;
+  const spacing = 0.24;
 
   // Generate initial flat grid positions
   const positions = useMemo(() => {
@@ -16,11 +16,11 @@ const WaveParticleField: React.FC = () => {
     for (let c = 0; c < cols; c++) {
       for (let r = 0; r < rows; r++) {
         const i = c * rows + r;
-        // X coordinate (horizontal spacing)
+        // X coordinate
         pos[i * 3] = (c - (cols - 1) / 2) * spacing;
-        // Y coordinate (height - starts at 0)
+        // Y coordinate (flat initially)
         pos[i * 3 + 1] = 0;
-        // Z coordinate (depth spacing)
+        // Z coordinate
         pos[i * 3 + 2] = (r - (rows - 1) / 2) * spacing;
       }
     }
@@ -40,8 +40,8 @@ const WaveParticleField: React.FC = () => {
     const array = positionAttr.array as Float32Array;
 
     // Map screen mouse [-1, 1] to world space coordinates
-    const targetMouseX = state.pointer.x * 6.0;
-    const targetMouseZ = -state.pointer.y * 6.0;
+    const targetMouseX = state.pointer.x * 6.5;
+    const targetMouseZ = -state.pointer.y * 6.5;
 
     // Smooth LERP movement for the mouse disturbance
     prevMouse.current.x = THREE.MathUtils.lerp(prevMouse.current.x, targetMouseX, 0.08);
@@ -58,16 +58,21 @@ const WaveParticleField: React.FC = () => {
         const x = array[idx];
         const z = array[idx + 2];
 
-        // 1. Sine wave ripple math
-        const wave = Math.sin(x * 0.45 + time * 1.8) * Math.cos(z * 0.45 + time * 1.8) * 0.35;
+        // Concentric distance from center for circular ripple propagation
+        const distance = Math.sqrt(x * x + z * z);
 
-        // 2. Cursor disturbance calculation
+        // 1. Primary concentric wave ripple + secondary diagonal flow
+        const wave1 = Math.sin(distance * 0.55 - time * 1.6) * 0.38;
+        const wave2 = Math.cos(x * 0.25 + z * 0.25 + time * 1.1) * 0.12;
+        const baseWave = wave1 + wave2;
+
+        // 2. Cursor disturbance calculation (local Gaussian warp)
         const dx = x - mouseX;
         const dz = z - mouseZ;
-        const dist = Math.sqrt(dx * dx + dz * dz);
-        const mouseWarp = Math.sin(dist - time * 3.0) * Math.exp(-dist * 0.4) * 0.4;
+        const mouseDist = Math.sqrt(dx * dx + dz * dz);
+        const mouseWarp = Math.sin(mouseDist - time * 3.0) * Math.exp(-mouseDist * 0.45) * 0.45;
 
-        array[idx + 1] = wave + mouseWarp;
+        array[idx + 1] = baseWave + mouseWarp;
       }
     }
 
@@ -76,12 +81,12 @@ const WaveParticleField: React.FC = () => {
     // 3. Tilting the entire particle field based on cursor direction
     pointsRef.current.rotation.x = THREE.MathUtils.lerp(
       pointsRef.current.rotation.x,
-      -Math.PI / 3.2 + state.pointer.y * 0.12,
+      -Math.PI / 3.0 + state.pointer.y * 0.15,
       0.05
     );
     pointsRef.current.rotation.y = THREE.MathUtils.lerp(
       pointsRef.current.rotation.y,
-      state.pointer.x * 0.12,
+      state.pointer.x * 0.15,
       0.05
     );
   });
@@ -106,7 +111,7 @@ export const Hero3DScene: React.FC = () => {
       <Suspense fallback={null}>
         <Canvas
           dpr={[1, 2]}
-          camera={{ position: [0, 0, 5], fov: 60 }}
+          camera={{ position: [0, 2.2, 5.5], fov: 60 }}
           {...({ style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' } } as any)}
         >
           <ambientLight intensity={0.4} />
