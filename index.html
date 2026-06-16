@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Gokul A - Software Engineer Portfolio | Human-Intelligence" />
+    <title>Gokul A — Engineer</title>
+    <!-- Editorial Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            colors: {
+              'rich-black': '#050505',
+              'deep-charcoal': '#0A0A0A',
+              'surface': '#111111',
+              'gold': '#D4AF37',
+              'soft-gold': '#BFA760',
+              'text-primary': '#EDEDED',
+              'text-muted': '#A1A1A1',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #EDEDED;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            selection-background-color: #D4AF37;
+            selection-color: #0A0A0A;
+            overflow-x: hidden;
+        }
+        
+        /* Noise Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+
+        ::selection {
+          background: #D4AF37;
+          color: #0A0A0A;
+        }
+
+        .gold-underline {
+          position: relative;
+        }
+        .gold-underline::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background: #D4AF37;
+          transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gold-underline:hover::after {
+          width: 100%;
+        }
+
+        .serif-italic { font-style: italic; }
+        
+        .project-image-container {
+          filter: grayscale(100%) contrast(110%);
+          transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-image-container:hover {
+          filter: grayscale(0%) contrast(100%);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+        .asymmetric-border {
+          border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+
+        /* Continuous Marquee Animations */
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-reverse {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-marquee {
+          display: flex;
+          width: max-content;
+          animation: marquee var(--marquee-duration, 35s) linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+        .animate-marquee-reverse {
+          display: flex;
+          width: max-content;
+          animation: marquee-reverse var(--marquee-duration, 35s) linear infinite;
+        }
+        .animate-marquee-reverse:hover {
+          animation-play-state: paused;
+        }
+
+        /* Hide default cursor on desktop when custom cursor is active */
+        @media (any-hover: hover) {
+          .custom-cursor-active,
+          .custom-cursor-active * {
+            cursor: none !important;
+          }
+        }
+
+        /* HTML: <div class="loader"></div> */
+        .loader {
+          width: 70px;
+          height: 40px;
+          outline: 2px solid #fff;
+          background:
+            radial-gradient(farthest-side,#D4AF37 90%,#0000) 0 0/8px 8px no-repeat,
+            radial-gradient(farthest-side,#000 90%,#0000) 0 0/8px 8px no-repeat,
+            linear-gradient(#fff 0 0) 50%/10px 100% no-repeat,
+            conic-gradient(from  90deg at 10px 10px,#0000 90deg,#fff 0),
+            conic-gradient(from -90deg at 60px 30px,#0000 90deg,#fff 0);
+          animation: l9 2s infinite;
+        }
+        @keyframes l9 {
+          0%    {background-position:50%  100%,0    0   ,50%}
+          12.5% {background-position:0    100%,50%  0   ,50%}
+          25%   {background-position:0    0   ,50%  100%,50%}
+          37.5% {background-position:50%  0   ,100% 100%,50%}
+          50%   {background-position:50%  100%,100% 0   ,50%}
+          62.5% {background-position:100% 100%,50%  0   ,50%}
+          75%   {background-position:100% 0   ,50%  100%,50%}
+          82.5% {background-position:50%  0   ,0    100%,50%}
+          100%  {background-position:50%  100%,0    0   ,50%}
+        }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "firebase/app": "https://esm.sh/firebase@11.3.1/app",
+    "firebase/firestore": "https://esm.sh/firebase@11.3.1/firestore",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0",
+    "firebase/": "https://esm.sh/firebase@^12.8.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

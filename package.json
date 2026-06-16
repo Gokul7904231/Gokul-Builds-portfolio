@@ -1,0 +1,29 @@
+{
+  "name": "gokul-a---software-engineer-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "firebase": "^12.8.0",
+    "lucide-react": "0.460.0",
+    "motion": "^12.40.0",
+    "react": "18.2.0",
+    "react-animated-cursor": "^2.11.2",
+    "react-dom": "18.2.0",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/three": "^0.184.1",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
