@@ -40,15 +40,15 @@ export const ExperienceTimeline: React.FC = () => {
   };
 
   return (
-    <section 
-      id={SectionId.Experience} 
+    <section
+      id={SectionId.Experience}
       className="py-56 bg-rich-black border-t border-white/5 relative overflow-hidden px-8 md:px-24"
     >
       {/* Background radial glow */}
       <div className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full bg-gold/5 blur-3xl pointer-events-none -translate-y-1/2" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Header Section */}
         <div className="mb-32 text-center md:text-left">
           <span className="text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-10 block">
@@ -64,7 +64,7 @@ export const ExperienceTimeline: React.FC = () => {
 
         {/* Timeline Container */}
         <div className="relative">
-          
+
           {/* Central Vertical Timeline Line */}
           {/* Hidden on mobile, down the center on desktop */}
           <div className="absolute left-1/2 top-8 bottom-8 w-[1px] bg-gradient-to-b from-gold/5 via-gold/30 to-gold/5 -translate-x-1/2 hidden md:block" />
@@ -84,11 +84,11 @@ export const ExperienceTimeline: React.FC = () => {
               };
 
               return (
-                <div 
+                <div
                   key={exp.company}
                   className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center relative"
                 >
-                  
+
                   {/* CENTRAL INDICATOR NODE (Desktop) */}
                   <div className="absolute left-1/2 -translate-x-1/2 top-12 z-20 hidden md:flex items-center justify-center">
                     {/* Ring */}
@@ -97,16 +97,14 @@ export const ExperienceTimeline: React.FC = () => {
                       <div className="w-2.5 h-2.5 rounded-full bg-gold" />
                     </div>
                     {/* Horizontal Connector Stem joining timeline node to card */}
-                    <div 
-                      className={`absolute top-2.5 w-12 h-[1px] bg-gold/25 ${
-                        isEven ? 'right-5' : 'left-5'
-                      }`} 
+                    <div
+                      className={`absolute top-2.5 w-12 h-[1px] bg-gold/25 ${isEven ? 'right-5' : 'left-5'
+                        }`}
                     />
                     {/* Opposite stem for Log Entry Pill */}
-                    <div 
-                      className={`absolute top-2.5 w-12 h-[1px] bg-gold/15 ${
-                        isEven ? 'left-5' : 'right-5'
-                      }`} 
+                    <div
+                      className={`absolute top-2.5 w-12 h-[1px] bg-gold/15 ${isEven ? 'left-5' : 'right-5'
+                        }`}
                     />
                   </div>
 
@@ -145,7 +143,7 @@ export const ExperienceTimeline: React.FC = () => {
                           {certMap[exp.company] && (
                             <>
                               <span className="text-gold/30 text-xs hidden sm:inline select-none">•</span>
-                              <a 
+                              <a
                                 href={certMap[exp.company]}
                                 target="_blank"
                                 rel="noreferrer"
@@ -186,24 +184,8 @@ export const ExperienceTimeline: React.FC = () => {
                         ))}
                       </div>
 
-                      {/* Research Proof link for Al Noof */}
-                      {exp.company === 'Al Noof Recruitment Services' && (
-                        <div className="mb-8 p-4 border border-gold/10 bg-rich-black/40 rounded-xl flex items-center justify-between group-hover:border-gold/30 transition-all duration-300">
-                          <div className="flex items-center gap-3">
-                            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-                            <span className="text-[10px] font-mono text-text-muted tracking-wider uppercase">Verification Documentation</span>
-                          </div>
-                          <a 
-                            href={ALNOOF_DRIVE_URL} 
-                            target="_blank" 
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 text-[9px] font-bold tracking-widest text-gold hover:text-white uppercase transition-colors"
-                          >
-                            <span>Open Proof</span>
-                            <ArrowUpRight className="w-3 h-3 text-gold" />
-                          </a>
-                        </div>
-                      )}
+
+
 
                       {/* Dynamic Installation/Integration Meter matching the user image */}
                       <div className="pt-2">
@@ -212,7 +194,7 @@ export const ExperienceTimeline: React.FC = () => {
                           <span className="text-gold font-bold">{meta.score} / 100</span>
                         </div>
                         <div className="h-1 w-full bg-rich-black/80 rounded-full overflow-hidden">
-                          <motion.div 
+                          <motion.div
                             className="h-full bg-gradient-to-r from-soft-gold to-gold rounded-full"
                             initial={{ width: 0 }}
                             whileInView={{ width: `${meta.score}%` }}
@@ -226,9 +208,8 @@ export const ExperienceTimeline: React.FC = () => {
                   </div>
 
                   {/* PILL ON OPPOSITE COLUMN (Desktop) */}
-                  <div className={`hidden md:flex ${
-                    isEven ? 'md:order-2 md:justify-start pl-12' : 'md:order-1 md:justify-end pr-12'
-                  }`}>
+                  <div className={`hidden md:flex ${isEven ? 'md:order-2 md:justify-start pl-12' : 'md:order-1 md:justify-end pr-12'
+                    }`}>
                     <div className="border border-white/5 bg-surface/30 backdrop-blur-sm rounded-full py-2 px-5 font-mono text-[9px] tracking-[0.2em] text-text-muted flex items-center gap-3 select-none hover:border-gold/30 hover:text-gold transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
                       <Milestone className="w-3 h-3 text-gold/60" />
                       <span>LOG_ENTRY:</span>

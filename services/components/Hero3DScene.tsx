@@ -107,7 +107,7 @@ export const Hero3DScene: React.FC = () => {
         <Canvas
           dpr={[1, 2]}
           camera={{ position: [0, 0, 5], fov: 60 }}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' } as any}
         >
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
