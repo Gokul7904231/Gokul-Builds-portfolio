@@ -301,7 +301,7 @@ export const LINKEDIN_POSTS: LinkedInPost[] = [
   {
     title: 'The Dawn of Agentic Intelligence',
     summary: 'Exploring how multi-agent orchestration and autonomy are bridging the gap to Artificial General Intelligence (AGI) through structured tool-use and native memories.',
-    tag: 'AGI & Agentic AI',
+    tag: 'AI',
     url: 'https://linkedin.com'
   },
   {

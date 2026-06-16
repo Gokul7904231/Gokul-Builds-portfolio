@@ -10,7 +10,6 @@ export const CustomCursor: React.FC = () => {
       innerScale={0}
       outerScale={2}
       outerAlpha={0}
-      hasBlendMode={false}
       innerStyle={{
         backgroundColor: '#D4AF37'
       }}
