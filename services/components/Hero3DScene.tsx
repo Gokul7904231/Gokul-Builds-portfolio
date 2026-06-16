@@ -1,94 +1,102 @@
-import React, { useRef, Suspense } from 'react';
+import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-const GoldTorusKnot = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const targetRotationX = useRef(0);
-  const targetRotationY = useRef(0);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-
-    // Continuous smooth rotation
-    targetRotationX.current += 0.003;
-    targetRotationY.current += 0.005;
-
-    // Latent interactive response based on mouse position
-    // state.pointer ranges from -1 to 1 representing normalized screen coords
-    const mouseInfluenceX = state.pointer.x * 0.8;
-    const mouseInfluenceY = state.pointer.y * 0.8;
-
-    // Smooth LERP interpolation for rotation
-    meshRef.current.rotation.x = THREE.MathUtils.lerp(
-      meshRef.current.rotation.x,
-      targetRotationX.current + mouseInfluenceY,
-      0.05
-    );
-    meshRef.current.rotation.y = THREE.MathUtils.lerp(
-      meshRef.current.rotation.y,
-      targetRotationY.current + mouseInfluenceX,
-      0.05
-    );
-
-    // Elegant vertical floating motion
-    meshRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.8) * 0.15;
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      {/* Modest segments ensures ultra-smooth performance on any device */}
-      <torusKnotGeometry args={[1.5, 0.45, 96, 12]} />
-      <meshStandardMaterial
-        color="#D4AF37"
-        wireframe
-        roughness={0.1}
-        metalness={0.9}
-        emissive="#1a1403"
-        emissiveIntensity={0.5}
-      />
-    </mesh>
-  );
-};
-
-const Particles = () => {
+const WaveParticleField: React.FC = () => {
   const pointsRef = useRef<THREE.Points>(null);
+  const cols = 50;
+  const rows = 50;
+  const count = cols * rows;
+  const spacing = 0.28;
+
+  // Generate initial flat grid positions
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        const i = c * rows + r;
+        // X coordinate (horizontal spacing)
+        pos[i * 3] = (c - (cols - 1) / 2) * spacing;
+        // Y coordinate (height - starts at 0)
+        pos[i * 3 + 1] = 0;
+        // Z coordinate (depth spacing)
+        pos[i * 3 + 2] = (r - (rows - 1) / 2) * spacing;
+      }
+    }
+    return pos;
+  }, [cols, rows, count, spacing]);
+
+  // Keep track of smoothed mouse coordinates to prevent sudden jumps
+  const prevMouse = useRef({ x: 0, y: 0 });
 
   useFrame((state) => {
     if (!pointsRef.current) return;
-    pointsRef.current.rotation.y = state.clock.getElapsedTime() * 0.015;
+
+    const time = state.clock.getElapsedTime();
+    const positionAttr = pointsRef.current.geometry.attributes.position;
+    if (!positionAttr) return;
+
+    const array = positionAttr.array as Float32Array;
+
+    // Map screen mouse [-1, 1] to world space coordinates
+    const targetMouseX = state.pointer.x * 6.0;
+    const targetMouseZ = -state.pointer.y * 6.0;
+
+    // Smooth LERP movement for the mouse disturbance
+    prevMouse.current.x = THREE.MathUtils.lerp(prevMouse.current.x, targetMouseX, 0.08);
+    prevMouse.current.y = THREE.MathUtils.lerp(prevMouse.current.y, targetMouseZ, 0.08);
+
+    const mouseX = prevMouse.current.x;
+    const mouseZ = prevMouse.current.y;
+
+    // Recalculate Y position of every point for wave ripple + cursor disturbance
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        const i = c * rows + r;
+        const idx = i * 3;
+        const x = array[idx];
+        const z = array[idx + 2];
+
+        // 1. Sine wave ripple math
+        const wave = Math.sin(x * 0.45 + time * 1.8) * Math.cos(z * 0.45 + time * 1.8) * 0.35;
+
+        // 2. Cursor disturbance calculation
+        const dx = x - mouseX;
+        const dz = z - mouseZ;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+        const mouseWarp = Math.sin(dist - time * 3.0) * Math.exp(-dist * 0.4) * 0.4;
+
+        array[idx + 1] = wave + mouseWarp;
+      }
+    }
+
+    positionAttr.needsUpdate = true;
+
+    // 3. Tilting the entire particle field based on cursor direction
+    pointsRef.current.rotation.x = THREE.MathUtils.lerp(
+      pointsRef.current.rotation.x,
+      -Math.PI / 3.2 + state.pointer.y * 0.12,
+      0.05
+    );
+    pointsRef.current.rotation.y = THREE.MathUtils.lerp(
+      pointsRef.current.rotation.y,
+      state.pointer.x * 0.12,
+      0.05
+    );
   });
 
-  const count = 120;
-  const positions = React.useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
-    }
-    return pos;
-  }, []);
-
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.03}
-        color="#D4AF37"
+    <Points ref={pointsRef} positions={positions} stride={3}>
+      <PointMaterial
         transparent
-        opacity={0.3}
+        color="#D4AF37"
+        size={0.08}
         sizeAttenuation
+        depthWrite={false}
+        opacity={0.5}
       />
-    </points>
+    </Points>
   );
 };
 
@@ -99,14 +107,13 @@ export const Hero3DScene: React.FC = () => {
         <Canvas
           dpr={[1, 2]}
           camera={{ position: [0, 0, 5], fov: 60 }}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
         >
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
           <pointLight position={[-5, -5, -5]} intensity={0.5} color="#D4AF37" />
           
-          <GoldTorusKnot />
-          <Particles />
+          <WaveParticleField />
         </Canvas>
       </Suspense>
     </div>
