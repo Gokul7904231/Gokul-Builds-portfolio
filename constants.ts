@@ -38,7 +38,7 @@ export const PROJECTS: Project[] = [
     techStack: ['LangGraph', 'CrewAI', 'MCP', 'Chrome Ext', 'Qdrant', 'mem0', 'Langfuse', 'DeepEval'],
     metrics: 'A2A Protocol',
     githubUrl: 'https://github.com/Gokul7904231/HireHawk',
-    demoUrl: 'https://hirehawk-demo.vercel.app/'
+    demoUrl: 'https://hirehawk-dashboard.pages.dev/'
   },
   {
     title: 'Sentixcare',
