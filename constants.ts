@@ -36,7 +36,7 @@ export const PROJECTS: Project[] = [
       'Integrated cross-session mem0 memory, self-healing runtime recovery, and semantic MCP routing with Qdrant to reduce token overhead by ~99%.'
     ],
     techStack: ['LangGraph', 'CrewAI', 'MCP', 'Chrome Ext', 'Qdrant', 'mem0', 'Langfuse', 'DeepEval'],
-    metrics: '99% Token Reduction / A2A Protocol',
+    metrics: 'A2A Protocol',
     githubUrl: 'https://github.com/Gokul7904231/HireHawk',
     demoUrl: 'https://hirehawk-demo.vercel.app/'
   },
@@ -85,7 +85,7 @@ githubUrl: 'https://github.com/Gokul7904231/Sentixcare',
     techStack: ['React.js', 'Node.js', 'Express', 'MongoDB'],
     metrics: 'SIH 2025 Finalist',
     githubUrl: 'https://github.com/Gokul7904231',
-    demoUrl: 'https://fluffy-raindrop-2fae3e.netlify.app/',
+    demoUrl: 'https://planetopia-ecospark.netlify.app/',
     videoUrl: 'https://youtu.be/YNPv22hxtF4'
   },
   {
