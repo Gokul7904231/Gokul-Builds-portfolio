@@ -32,12 +32,11 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
   return (
     <motion.div 
       className={`flex flex-col lg:flex-row gap-16 py-32 items-center ${!isEven ? 'lg:flex-row-reverse' : ''}`}
-      whileHover={{ scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 150, damping: 15 }}
     >
       {/* Visual Side */}
       <div className="w-full lg:w-3/5">
-        <div className="project-image-container relative group w-full aspect-[4/3] md:aspect-video rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-gold/30">
+      <div className="project-image-container relative group w-full aspect-[4/3] md:aspect-video rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 border-white/10">
           
           {/* Browser Header Mockup */}
           <div className="h-10 border-b border-white/5 bg-[#121212] px-4 flex items-center justify-between relative z-20">
@@ -72,8 +71,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
               />
             ))}
             
-            {/* Subtle contrast mask */}
-            <div className="absolute inset-0 bg-rich-black/40 z-10 pointer-events-none" />
+
 
             {/* Actual Screenshot with elegant spacing and round borders */}
             <div className="absolute inset-3 z-10 rounded-xl overflow-hidden border border-white/5 bg-rich-black/40">

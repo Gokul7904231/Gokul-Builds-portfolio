@@ -24,7 +24,12 @@ export const PROJECTS: Project[] = [
     title: 'HireHawk',
     problemStatement: 'Manual job application workflows are tedious, slow, and lack cohesive multi-agent orchestration and precision tailoring.',
     description: 'A production-grade multi-agent system that autonomously handles the entire job application workflow. Features a Chrome Extension (Manifest V3) that captures web job descriptions in real-time and streams live multi-agent execution paths directly to the user via AG-UI protocol.',
-    imageGallery: ['https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=1200'],
+    imageGallery: [
+      '/hirehawk/1.png',
+      '/hirehawk/2.png',
+      '/hirehawk/3.png',
+      '/hirehawk/4.png'
+    ],
     highlights: [
       'Orchestrated a LangGraph supervisor controlling a swarm of specialized tool-using agents via 5 custom MCP servers.',
       'Designed a multi-framework setup delegating to CrewAI resume tailors via Google\'s A2A cross-framework cooperation protocol.',
