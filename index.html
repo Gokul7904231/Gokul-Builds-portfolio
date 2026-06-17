@@ -11,31 +11,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Tailwind Configuration -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
-            },
-            colors: {
-              'rich-black': '#050505',
-              'deep-charcoal': '#0A0A0A',
-              'surface': '#111111',
-              'gold': '#D4AF37',
-              'soft-gold': '#BFA760',
-              'text-primary': '#EDEDED',
-              'text-muted': '#A1A1A1',
-            }
-          }
-        }
-      }
-    </script>
     <style>
+
         body {
+
             background-color: #050505;
             color: #EDEDED;
             scroll-behavior: smooth;
@@ -166,25 +145,12 @@
           100%  {background-position:50%  100%,0    0   ,50%}
         }
     </style>
-    <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@18.2.0",
-    "react/": "https://esm.sh/react@18.2.0/",
-    "react-dom": "https://esm.sh/react-dom@18.2.0",
-    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
-    "firebase/app": "https://esm.sh/firebase@11.3.1/app",
-    "firebase/firestore": "https://esm.sh/firebase@11.3.1/firestore",
-    "lucide-react": "https://esm.sh/lucide-react@0.460.0",
-    "firebase/": "https://esm.sh/firebase@^12.8.0/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+
+
+    <!-- React/Vite entry is loaded from index.tsx. Tailwind is bundled by Vite. -->
+  </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>

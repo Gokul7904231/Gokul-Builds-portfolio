@@ -8,6 +8,11 @@ export default defineConfig(({ mode }) => {
     // 1. Explicitly enforce absolute root pathing for production assets
     base: '/',
 
+    build: {
+      sourcemap: true,
+    },
+
+
     server: {
       port: 3000,
       host: '0.0.0.0',
@@ -17,6 +22,10 @@ export default defineConfig(({ mode }) => {
       'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
     },
+    css: {
+      devSourcemap: true,
+    },
+
     resolve: {
       alias: {
         // 2. Fix the alias to point to your frontend source folder 'src'

@@ -172,11 +172,13 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
               className="group inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-gold hover:text-text-primary transition-colors"
             >
               <Github className="w-4 h-4" /> 
-              <span>Source Code</span>
-              <div className="relative overflow-hidden w-4 h-4 flex items-center justify-center">
-                <ArrowUpRight className="absolute text-gold transition-transform duration-500 ease-[cubic-bezier(0.87,0,0.13,1)] group-hover:translate-x-full group-hover:-translate-y-full w-4 h-4" />
-                <ArrowUpRight className="absolute text-gold -translate-x-full translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.87,0,0.13,1)] group-hover:translate-x-0 group-hover:translate-y-0 w-4 h-4" />
-              </div>
+              {project.title !== 'Planetopia' && <span>Source Code</span>}
+              {project.title !== 'Planetopia' && (
+                <div className="relative overflow-hidden w-4 h-4 flex items-center justify-center">
+                  <ArrowUpRight className="absolute text-gold transition-transform duration-500 ease-[cubic-bezier(0.87,0,0.13,1)] group-hover:translate-x-full group-hover:-translate-y-full w-4 h-4" />
+                  <ArrowUpRight className="absolute text-gold -translate-x-full translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.87,0,0.13,1)] group-hover:translate-x-0 group-hover:translate-y-0 w-4 h-4" />
+                </div>
+              )}
             </a>
           )}
           {project.demoUrl !== undefined && (

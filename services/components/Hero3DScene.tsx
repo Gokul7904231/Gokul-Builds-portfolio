@@ -1,124 +1,198 @@
+/// <reference types="@react-three/fiber" />
 import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-const WaveParticleField: React.FC = () => {
+const AntigravityParticles: React.FC = () => {
   const pointsRef = useRef<THREE.Points>(null);
-  const cols = 60;
-  const rows = 60;
-  const count = cols * rows;
-  const spacing = 0.24;
+  const geometryRef = useRef<THREE.BufferGeometry>(null);
 
-  // Generate initial flat grid positions
-  const positions = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let c = 0; c < cols; c++) {
-      for (let r = 0; r < rows; r++) {
-        const i = c * rows + r;
-        // X coordinate
-        pos[i * 3] = (c - (cols - 1) / 2) * spacing;
-        // Y coordinate (flat initially)
-        pos[i * 3 + 1] = 0;
-        // Z coordinate
-        pos[i * 3 + 2] = (r - (rows - 1) / 2) * spacing;
+  const { positions, colors, basePositions, particleCount } = useMemo(() => {
+    const posArr: number[] = [];
+    const colArr: number[] = [];
+    const basePos: number[] = [];
+
+    const RING_COUNT = 22;
+    const RING_RADIUS_STEP = 0.45;
+
+    const goldColor = new THREE.Color('#D4AF37').multiplyScalar(2.2);
+    const whiteColor = new THREE.Color('#FFFFFF').multiplyScalar(1.6);
+    const dimGold = new THREE.Color('#B8960C').multiplyScalar(1.8);
+
+    for (let ringIndex = 1; ringIndex <= RING_COUNT; ringIndex++) {
+      const radius = ringIndex * RING_RADIUS_STEP;
+      const particlesInRing = Math.floor((2 * Math.PI * radius) / 0.22);
+
+      for (let p = 0; p < particlesInRing; p++) {
+        const angle = (p / particlesInRing) * Math.PI * 2;
+
+        const baseX = Math.cos(angle) * radius;
+        const baseY = 0;
+        const baseZ = Math.sin(angle) * radius;
+
+        const scatterX = (Math.random() - 0.5) * 0.12;
+        const scatterY = (Math.random() - 0.5) * 0.06;
+        const scatterZ = (Math.random() - 0.5) * 0.12;
+
+        basePos.push(baseX, baseY, baseZ);
+        posArr.push(baseX + scatterX, baseY + scatterY, baseZ + scatterZ);
+
+        let color: THREE.Color;
+        if (radius < 2.5) {
+          color = goldColor;
+        } else if (radius < 5.5) {
+          color = Math.random() > 0.4 ? goldColor : whiteColor;
+        } else {
+          const r = Math.random();
+          if (r < 0.5) color = whiteColor;
+          else if (r < 0.8) color = goldColor;
+          else color = dimGold;
+        }
+
+        colArr.push(color.r, color.g, color.b);
       }
     }
-    return pos;
-  }, [cols, rows, count, spacing]);
 
-  // Keep track of smoothed mouse coordinates to prevent sudden jumps
-  const prevMouse = useRef({ x: 0, y: 0 });
+    return {
+      positions: new Float32Array(posArr),
+      colors: new Float32Array(colArr),
+      basePositions: new Float32Array(basePos),
+      particleCount: posArr.length / 3,
+    };
+  }, []);
+
+  const velocitiesRef = useRef<Float32Array>(new Float32Array(particleCount * 3));
+  const smoothMouseRef = useRef({ x: 0, y: 0 });
 
   useFrame((state) => {
-    if (!pointsRef.current) return;
+    if (!pointsRef.current || !geometryRef.current) return;
 
     const time = state.clock.getElapsedTime();
-    const positionAttr = pointsRef.current.geometry.attributes.position;
+    const positionAttr = geometryRef.current.attributes.position;
     if (!positionAttr) return;
 
-    const array = positionAttr.array as Float32Array;
+    const posArray = positionAttr.array as Float32Array;
+    const velocities = velocitiesRef.current;
 
-    // Map screen mouse [-1, 1] to world space coordinates
-    const targetMouseX = state.pointer.x * 6.5;
-    const targetMouseZ = -state.pointer.y * 6.5;
+    const targetMouseX = state.pointer.x * 8;
+    const targetMouseZ = -state.pointer.y * 8;
+    smoothMouseRef.current.x = THREE.MathUtils.lerp(smoothMouseRef.current.x, targetMouseX, 0.07);
+    smoothMouseRef.current.y = THREE.MathUtils.lerp(smoothMouseRef.current.y, targetMouseZ, 0.07);
 
-    // Smooth LERP movement for the mouse disturbance
-    prevMouse.current.x = THREE.MathUtils.lerp(prevMouse.current.x, targetMouseX, 0.08);
-    prevMouse.current.y = THREE.MathUtils.lerp(prevMouse.current.y, targetMouseZ, 0.08);
+    const mouseX = smoothMouseRef.current.x;
+    const mouseZ = smoothMouseRef.current.y;
 
-    const mouseX = prevMouse.current.x;
-    const mouseZ = prevMouse.current.y;
+    const SPRING_STIFFNESS = 0.04;
+    const SPRING_DAMPING = 0.80;
+    const REPULSE_RADIUS = 2.8;
+    const REPULSE_STRENGTH = 2.2;
+    const VERTICAL_LIFT = 0.8;
+    const VELOCITY_SCALE = 0.22;
 
-    // Recalculate Y position of every point for wave ripple + cursor disturbance
-    for (let c = 0; c < cols; c++) {
-      for (let r = 0; r < rows; r++) {
-        const i = c * rows + r;
-        const idx = i * 3;
-        const x = array[idx];
-        const z = array[idx + 2];
+    for (let i = 0; i < particleCount; i++) {
+      const idx = i * 3;
 
-        // Concentric distance from center for circular ripple propagation
-        const distance = Math.sqrt(x * x + z * z);
+      const currentX = posArray[idx];
+      const currentY = posArray[idx + 1];
+      const currentZ = posArray[idx + 2];
 
-        // 1. Primary concentric wave ripple + secondary diagonal flow
-        const wave1 = Math.sin(distance * 0.55 - time * 1.6) * 0.38;
-        const wave2 = Math.cos(x * 0.25 + z * 0.25 + time * 1.1) * 0.12;
-        const baseWave = wave1 + wave2;
+      const baseX = basePositions[idx];
+      const baseZ = basePositions[idx + 2];
+      const baseYWithBreath =
+        basePositions[idx + 1] + Math.sin(time * 0.55 + i * 0.09) * 0.05;
 
-        // 2. Cursor disturbance calculation (local Gaussian warp)
-        const dx = x - mouseX;
-        const dz = z - mouseZ;
-        const mouseDist = Math.sqrt(dx * dx + dz * dz);
-        const mouseWarp = Math.sin(mouseDist - time * 3.0) * Math.exp(-mouseDist * 0.45) * 0.45;
+      const dx = currentX - mouseX;
+      const dz = currentZ - mouseZ;
+      const mouseDist = Math.sqrt(dx * dx + dz * dz);
 
-        array[idx + 1] = baseWave + mouseWarp;
+      let pushX = 0;
+      let pushY = 0;
+      let pushZ = 0;
+
+      if (mouseDist < REPULSE_RADIUS && mouseDist > 0.001) {
+        let force = (REPULSE_RADIUS - mouseDist) / REPULSE_RADIUS;
+        force = force * force;
+        pushX = (dx / mouseDist) * force * REPULSE_STRENGTH;
+        pushZ = (dz / mouseDist) * force * REPULSE_STRENGTH;
+        pushY = force * VERTICAL_LIFT;
       }
+
+      const springX = (baseX - currentX) * SPRING_STIFFNESS;
+      const springY = (baseYWithBreath - currentY) * SPRING_STIFFNESS;
+      const springZ = (baseZ - currentZ) * SPRING_STIFFNESS;
+
+      let vx = velocities[idx];
+      let vy = velocities[idx + 1];
+      let vz = velocities[idx + 2];
+
+      vx = vx * SPRING_DAMPING + springX + pushX * VELOCITY_SCALE;
+      vy = vy * SPRING_DAMPING + springY + pushY * VELOCITY_SCALE;
+      vz = vz * SPRING_DAMPING + springZ + pushZ * VELOCITY_SCALE;
+
+      velocities[idx] = vx;
+      velocities[idx + 1] = vy;
+      velocities[idx + 2] = vz;
+
+      posArray[idx] = currentX + vx;
+      posArray[idx + 1] = currentY + vy;
+      posArray[idx + 2] = currentZ + vz;
     }
 
     positionAttr.needsUpdate = true;
-
-    // 3. Tilting the entire particle field based on cursor direction
-    pointsRef.current.rotation.x = THREE.MathUtils.lerp(
-      pointsRef.current.rotation.x,
-      -Math.PI / 3.0 + state.pointer.y * 0.15,
-      0.05
-    );
-    pointsRef.current.rotation.y = THREE.MathUtils.lerp(
-      pointsRef.current.rotation.y,
-      state.pointer.x * 0.15,
-      0.05
-    );
+    pointsRef.current.rotation.y += 0.0006;
   });
 
   return (
-    <Points ref={pointsRef} positions={positions} stride={3}>
-      <PointMaterial
-        transparent
-        color="#D4AF37"
-        size={0.08}
+    <points ref={pointsRef}>
+      <bufferGeometry ref={geometryRef}>
+        <bufferAttribute
+          attach="attributes-position"
+          count={particleCount}
+          array={positions}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={particleCount}
+          array={colors}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.045}
         sizeAttenuation
+        transparent
+        opacity={0.88}
         depthWrite={false}
-        opacity={0.5}
+        vertexColors
       />
-    </Points>
+    </points>
   );
 };
 
 export const Hero3DScene: React.FC = () => {
   return (
-    <div className="absolute inset-0 w-full h-full -z-10 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03)_0%,transparent_70%)]">
+    <div
+      className="absolute inset-0 w-full h-full -z-10 pointer-events-none"
+      style={{
+        backgroundImage:
+          'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(212,175,55,0.06) 0%, transparent 70%)',
+      }}
+    >
       <Suspense fallback={null}>
         <Canvas
-          dpr={[1, 2]}
-          camera={{ position: [0, 2.2, 5.5], fov: 60 }}
-          {...({ style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' } } as any)}
+          dpr={[1, 1.5]}
+          camera={{ position: [0, 6, 7], fov: 58, near: 0.1, far: 100 }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+          }}
         >
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
-          <pointLight position={[-5, -5, -5]} intensity={0.5} color="#D4AF37" />
-          
-          <WaveParticleField />
+          <AntigravityParticles />
         </Canvas>
       </Suspense>
     </div>

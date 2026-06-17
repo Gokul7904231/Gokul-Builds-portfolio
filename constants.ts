@@ -55,7 +55,7 @@ export const PROJECTS: Project[] = [
     ],
     techStack: ['Python', 'PyTorch', 'OpenCV', 'Flask'],
     metrics: 'ICRIT \'26 Publication',
-    githubUrl: 'https://github.com/Gokul7904231/MDPRS',
+githubUrl: 'https://github.com/Gokul7904231/Sentixcare',
     demoUrl: 'https://huggingface.co/spaces/gokul-music/Sentixcare'
   },
   {

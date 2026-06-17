@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+
+  /* Color Palette */
+  --color-rich-black: #050505;
+  --color-deep-charcoal: #0A0A0A;
+  --color-surface: #111111;
+  --color-gold: #D4AF37;
+  --color-soft-gold: #BFA760;
+  --color-text-primary: #EDEDED;
+  --color-text-muted: #A1A1A1;
+}
+
+/* Custom Interactive CSS Overrides */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-deep-charcoal);
+}
+
+.gold-underline {
+  position: relative;
+}
+
+.gold-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gold-underline:hover::after {
+  width: 100%;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+
+
+
+

@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionId } from '../../types';
 import { PROFILE_IMAGE_URL, RESUME_URL } from '../../constants';
 import { FileDown, ChevronRight, ArrowUpRight } from 'lucide-react';
 import Hero3DScene from './Hero3DScene';
 
 const Hero: React.FC = () => {
+  const [isColorized, setIsColorized] = useState(false);
+
+  useEffect(() => {
+    // Auto-transition from grayscale to color after 800ms
+    const timer = setTimeout(() => {
+      setIsColorized(true);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section id={SectionId.Home} className="min-h-screen flex flex-col justify-center px-8 md:px-24 pt-20 bg-rich-black relative overflow-hidden">
       {/* Scope-contained keyframe animations for premium layout effects */}
@@ -70,21 +81,18 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-20">
         
         {/* Profile Image - The "Gallery" Framing */}
-        <div className="lg:col-span-5 order-2 lg:order-1 animate-fade-in flex justify-center lg:justify-start" style={{ animationDelay: '0.2s' }}>
+        {/* eslint-disable-next-line */}
+        <div className="lg:col-span-5 order-2 lg:order-1 animate-fade-in flex justify-center lg:justify-start" style={{ animationDelay: '0.2s' }} suppressHydrationWarning>
           <div className="relative group">
             {/* Double Asymmetric Gold Borders - Made thicker and more defined for interactive precision */}
             <div className="absolute -inset-6 border-2 border-gold/20 asymmetric-border transform rotate-6 scale-110 pointer-events-none transition-transform duration-1000 group-hover:rotate-12"></div>
             <div className="absolute -inset-4 border-2 border-gold/35 asymmetric-border transform -rotate-3 pointer-events-none transition-transform duration-1000 group-hover:-rotate-6"></div>
             
             {/* The Image Container */}
-            <div className="w-72 h-72 md:w-96 md:h-96 lg:w-[420px] lg:h-[420px] rounded-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-[1.5s] border border-white/10 bg-surface shadow-[0_0_100px_rgba(0,0,0,0.9)] relative z-10">
-              <img 
-                src={PROFILE_IMAGE_URL} 
-                alt="Gokul A" 
-                className="w-full h-full object-cover object-[center_15%] scale-100 group-hover:scale-110 transition-transform duration-[3s] ease-out"
-                style={{ filter: 'contrast(1.1) brightness(0.9) saturate(1.1)' }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-rich-black/40 to-transparent opacity-60"></div>
+            <div className={`w-72 h-72 md:w-96 md:h-96 lg:w-105 lg:h-105 rounded-full overflow-hidden transition-all duration-[1.5s] border border-white/10 bg-surface shadow-[0_0_100px_rgba(0,0,0,0.9)] relative z-10 ${isColorized ? 'grayscale-0' : 'grayscale'}`}>
+              {/* eslint-disable-next-line */}
+              <img src={PROFILE_IMAGE_URL} alt="Gokul A" className="w-full h-full object-cover object-[center_15%] scale-100 group-hover:scale-110 transition-transform duration-[3s] ease-out" style={{ filter: 'contrast(1.1) brightness(0.9) saturate(1.1)' }} suppressHydrationWarning />
+              <div className="absolute inset-0 bg-linear-to-t from-rich-black/40 to-transparent opacity-60"></div>
             </div>
             
             {/* Minimalist Data Tag */}
@@ -97,12 +105,13 @@ const Hero: React.FC = () => {
         {/* Text Content - Luxury Serif Rhythm */}
         <div className="lg:col-span-7 order-1 lg:order-2 animate-fade-in">
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-8 h-px bg-gold/50 animate-emerge-left inline-block" style={{ transformOrigin: 'left' }}></div>
+            <div className="w-8 h-px bg-gold/50 animate-emerge-left inline-block"></div>
             <p className="text-gold uppercase tracking-[0.7em] text-[9px] font-bold">System Architect</p>
           </div>
           
           <h1 className="text-6xl md:text-9xl font-serif font-black mb-10 leading-[0.82] tracking-tighter overflow-hidden">
-            <span className="inline-block animate-emerge-left" style={{ animationDelay: '0.1s' }}>
+            {/* eslint-disable-next-line */}
+            <span className="inline-block animate-emerge-left" style={{ animationDelay: '0.1s' }} suppressHydrationWarning>
               Gokul A<span className="text-gold">.</span>
             </span>
           </h1>
@@ -113,10 +122,8 @@ const Hero: React.FC = () => {
             </p>
             {/* Elegant Sub-headline Active Line Underneath with slow left-to-right & right-to-left loop */}
             <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gold/15 rounded-full overflow-hidden">
-              <div 
-                className="w-full h-full bg-gold rounded-full animate-line-oscillate" 
-                style={{ transform: 'scaleX(0)' }}
-              />
+              {/* eslint-disable-next-line */}
+              <div className="w-full h-full bg-gold rounded-full animate-line-oscillate" style={{ transform: 'scaleX(0)' }} suppressHydrationWarning />
             </div>
           </div>
 
@@ -136,8 +143,8 @@ const Hero: React.FC = () => {
             </a>
             
             <div className="flex items-center gap-12">
-              <a href="https://github.com/Gokul7904231" target="_blank" className="text-[10px] font-bold uppercase tracking-[0.4em] text-text-muted hover:text-gold transition-colors gold-underline">Code</a>
-              <a href="https://linkedin.com/in/gokul1234" target="_blank" className="text-[10px] font-bold uppercase tracking-[0.4em] text-text-muted hover:text-gold transition-colors gold-underline">Connect</a>
+              <a href="https://github.com/Gokul7904231" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold uppercase tracking-[0.4em] text-text-muted hover:text-gold transition-colors gold-underline">Code</a>
+              <a href="https://linkedin.com/in/gokul1234" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold uppercase tracking-[0.4em] text-text-muted hover:text-gold transition-colors gold-underline">Connect</a>
             </div>
           </div>
         </div>
