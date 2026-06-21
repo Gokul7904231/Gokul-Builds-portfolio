@@ -101,18 +101,6 @@ const DOMAINS: Domain[] = [
 export const SkillsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(DOMAINS[0].id);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTab((currentTab) => {
-        const currentIndex = DOMAINS.findIndex((d) => d.id === currentTab);
-        const nextIndex = (currentIndex + 1) % DOMAINS.length;
-        return DOMAINS[nextIndex].id;
-      });
-    }, 4000); // 4-second interval match
-
-    return () => clearInterval(interval);
-  }, [activeTab]);
-
   const selectedDomain = DOMAINS.find((d) => d.id === activeTab) || DOMAINS[0];
 
   return (
