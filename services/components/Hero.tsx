@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { SectionId } from '../../types';
-import { PROFILE_IMAGE_URL, RESUME_URL } from '../../constants';
+import { RESUME_URL } from '../../constants';
 import { FileDown, ChevronRight, ArrowUpRight } from 'lucide-react';
 import Hero3DScene from './Hero3DScene';
+import ParticleImage from './ParticleImage';
 
 const Hero: React.FC = () => {
   const [isColorized, setIsColorized] = useState(false);
@@ -89,10 +90,8 @@ const Hero: React.FC = () => {
             <div className="absolute -inset-4 border-2 border-gold/35 asymmetric-border transform -rotate-3 pointer-events-none transition-transform duration-1000 group-hover:-rotate-6"></div>
             
             {/* The Image Container */}
-            <div className={`w-72 h-72 md:w-96 md:h-96 lg:w-105 lg:h-105 rounded-full overflow-hidden transition-all duration-[1.5s] border border-white/10 bg-surface shadow-[0_0_100px_rgba(0,0,0,0.9)] relative z-10 ${isColorized ? 'grayscale-0' : 'grayscale'}`}>
-              {/* eslint-disable-next-line */}
-              <img src={PROFILE_IMAGE_URL} alt="Gokul A" className="w-full h-full object-cover object-[center_15%] scale-100 group-hover:scale-110 transition-transform duration-[3s] ease-out" style={{ filter: 'contrast(1.1) brightness(0.9) saturate(1.1)' }} suppressHydrationWarning />
-              <div className="absolute inset-0 bg-linear-to-t from-rich-black/40 to-transparent opacity-60"></div>
+            <div className="w-72 h-72 md:w-96 md:h-96 lg:w-105 lg:h-105 rounded-full overflow-hidden transition-all duration-[1.5s] border border-white/10 bg-surface shadow-[0_0_100px_rgba(0,0,0,0.9)] relative z-10">
+              <ParticleImage />
             </div>
             
             {/* Minimalist Data Tag */}
