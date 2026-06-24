@@ -222,7 +222,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     iconType: 'award'
   },
   {
-    title: 'Crescent club of cobotics',
+    title: 'DSA Enthusiast',
     description: 'Solved 100+ Data Structures and Algorithms problems across LeetCode and GeeksforGeeks.',
     date: '2025',
     iconType: 'award'
