@@ -26,7 +26,7 @@ Lately, I have been training models for high-speed inference, designing multi-ag
 
 ```
  ┌────────────────────────────────────────────────────────────────────────┐
- │  ARTIFICIAL INTELLIGENCE                                                  │
+ │  ARTIFICIAL INTELLIGENCE                                               │
  │  PyTorch • OpenCV • NLP • CNN • LangChain • LangGraph • LlamaIndex     │
  ├────────────────────────────────────────────────────────────────────────┤
  │  THE CRAFT (Frontend & Fullstack)                                      │
