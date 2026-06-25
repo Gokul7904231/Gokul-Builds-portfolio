@@ -59,7 +59,7 @@ Lately, I have been training models for high-speed inference, designing multi-ag
   * Published foundational research on the system's architecture at **ICRIT '26**.
 * **Stack**: `Python` • `PyTorch` • `OpenCV` • `Flask` • `Streamlit`
 
-### 3. 🌍 Planetopia — Gamified Education Environment
+### 3. 🌍 [Planetopia](https://planetopia-ecospark.netlify.app/) — Gamified Education Environment
 * **Problem**: Sustainability often feels like an isolated chore rather than a shared, engaging community mission.
 * **Solution**: A gamified eco-education platform engineered during a 36-hour sprint. It features real-time dashboards, reward systems, and robust integration testing.
 * **Key Achievements**:
