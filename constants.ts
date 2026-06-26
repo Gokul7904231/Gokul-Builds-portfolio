@@ -1,6 +1,6 @@
 import { Experience, Project, SkillCategory, LinkedInPost, Achievement, Certification, Education } from './types';
 
-export const RESUME_URL = 'https://drive.google.com/file/d/1joujfVpHbztCevZu7p2g-lGCSIlpNigi/view?usp=sharing';
+export const RESUME_URL = 'https://drive.google.com/file/d/1el8X8aFdE_LSQISv99kTfInMit-LerEp/view?usp=sharing';
 export const PROFILE_IMAGE_URL = 'https://lh3.googleusercontent.com/d/1RSTOiIZ6O7C0Bb5kKjDFIxXDmmOu8nOO';
 export const ALNOOF_DRIVE_URL = 'https://drive.google.com/file/d/1fkp76NJGRuQk7eulKvMcyNC2T13-CJ3F/view?usp=sharing';
 
