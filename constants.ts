@@ -1,6 +1,6 @@
 import { Experience, Project, SkillCategory, LinkedInPost, Achievement, Certification, Education } from './types';
 
-export const RESUME_URL = 'https://drive.google.com/file/d/1el8X8aFdE_LSQISv99kTfInMit-LerEp/view?usp=sharing';
+export const RESUME_URL = 'https://drive.google.com/file/d/11WK1tizkVCIbkudV_f2owePwn81gFyNR/view?usp=drivesdk';
 export const PROFILE_IMAGE_URL = 'https://lh3.googleusercontent.com/d/1RSTOiIZ6O7C0Bb5kKjDFIxXDmmOu8nOO';
 export const ALNOOF_DRIVE_URL = 'https://drive.google.com/file/d/1fkp76NJGRuQk7eulKvMcyNC2T13-CJ3F/view?usp=sharing';
 
@@ -206,7 +206,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: 'Authored and delivered a peer-reviewed paper on AI-driven personalized recommendation systems at ICRIT \'26.',
     date: '2026',
     iconType: 'star',
-    link: 'https://www.academia.edu/168639338/Mood_Driven_Personalized_Recommendation_System_using_ERS',
+    link: 'https://zenodo.org/records/21064337',
     linkLabel: 'View Paper'
   },
   {
